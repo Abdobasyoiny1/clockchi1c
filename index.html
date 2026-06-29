@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{background:#111;color:#fff;font-family:sans-serif}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.card{background:#222;padding:10px;border-radius:10px}
+</style>
+</head>
+<body>
+<h2>ClockChic</h2>
+<div class="products" id="products"></div>
+<script>
+fetch('/api/products').then(r=>r.json()).then(d=>{
+ let html='';
+ d.forEach(p=>{
+ html+=`<div class="card"><img src="${p.images[0]||''}" width="100%"><h3>${p.name}</h3><p>${p.price}</p></div>`
+ });
+ document.getElementById('products').innerHTML=html;
+});
+</script>
+</body>
+</html>
