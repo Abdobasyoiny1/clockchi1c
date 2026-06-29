@@ -4,118 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ClockChic</title>
-
 <style>
-
-body{
-margin:0;
-font-family:sans-serif;
-background:#0f172a;
-color:#fff;
-}
-
-/* Header */
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px;
-background:#020617;
-}
-
-.logo{
-color:#22d3ee;
-font-size:22px;
-font-weight:bold;
-}
-
-#clock{
-font-size:16px;
-}
-
-/* Categories */
-nav{
-display:flex;
-overflow:auto;
-gap:10px;
-padding:10px;
-background:#020617;
-}
-
-nav button{
-background:#1e293b;
-border:none;
-color:#fff;
-padding:8px 12px;
-border-radius:8px;
-}
-
-/* Products */
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-gap:10px;
-padding:10px;
-}
-
-.card{
-background:#1e293b;
-border-radius:10px;
-padding:10px;
-}
-
-.card img{
-width:100%;
-border-radius:8px;
-}
-
-.card h4{
-margin:5px 0;
-}
-
-.price{
-color:#22d3ee;
-}
-
-/* Button */
-button.buy{
-background:#22d3ee;
-border:none;
-padding:10px;
-width:100%;
-border-radius:8px;
-color:#000;
-margin-top:5px;
-}
-
-/* Floating WhatsApp */
-.whatsapp{
-position:fixed;
-bottom:15px;
-left:15px;
-background:#25d366;
-color:#fff;
-padding:12px;
-border-radius:50%;
-font-size:20px;
-}
-
-/* Post banner */
-.banner{
-background:#22d3ee;
-color:#000;
-text-align:center;
-padding:8px;
-font-weight:bold;
-}
-
+body{margin:0;background:#0f172a;color:#fff;font-family:sans-serif}
+header{display:flex;justify-content:space-between;padding:15px;background:#020617}
+.logo{color:#22d3ee;font-size:22px}
+#clock{font-size:16px}
+nav{display:flex;gap:8px;overflow:auto;padding:10px}
+nav button{background:#1e293b;color:#fff;border:none;padding:8px;border-radius:6px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;padding:10px}
+.card{background:#1e293b;padding:10px;border-radius:10px}
+img{width:100%;border-radius:8px}
+.buy{background:#22d3ee;border:none;padding:8px;width:100%;border-radius:6px;color:#000}
+.admin{display:none;background:#000;padding:10px}
+input,textarea{width:100%;margin:5px 0;padding:8px}
+.social a{margin:0 5px;color:#22d3ee}
 </style>
 </head>
-
 <body>
-
-<div class="banner">🔥 عروض جديدة كل يوم 🔥</div>
-
 <header>
 <div class="logo">ClockChic</div>
 <div id="clock"></div>
@@ -126,67 +31,48 @@ font-weight:bold;
 <button onclick="filter('رجالي')">رجالي</button>
 <button onclick="filter('حريمي')">حريمي</button>
 <button onclick="filter('سمارت')">سمارت</button>
-<button onclick="filter('كلاسيك')">كلاسيك</button>
+<button onclick="filter('كاجوال')">كاجوال</button>
 </nav>
 
 <div class="products" id="products"></div>
 
-https://wa.me/201000045821💬</a>
+<div class="admin" id="admin">
+<h3>لوحة التحكم</h3>
+<input id="name" placeholder="اسم المنتج">
+<input id="price" placeholder="السعر">
+<input id="cat" placeholder="القسم">
+<textarea id="desc" placeholder="الوصف"></textarea>
+<input type="file" id="imgs" multiple>
+<button onclick="add()">اضافة</button>
+</div>
+
+<div class="social">
+<a href="https://www.facebook.com/share/1A9FYCqeq8/">Facebook</a>
+<a href="https://www.instagram.com/clockchic1">Instagram</a>
+<a href="https://www.tiktok.com/@b5k.a">TikTok</a>
+</div>
 
 <script>
-
-// الساعة اللايف
-setInterval(()=>{
-document.getElementById("clock").innerText=
-new Date().toLocaleTimeString();
-},1000);
-
-// عرض المنتجات
-let allProducts=[];
-
-function load(){
-fetch('/api/products')
-.then(r=>r.json())
-.then(data=>{
-allProducts=data;
-render(data);
-});
-}
-
-function render(data){
-let html='';
-data.forEach(p=>{
-html+=`
-<div class="card">
-${p.images[0] || 
+setInterval(()=>clock.innerText=new Date().toLocaleTimeString(),1000)
+let data=JSON.parse(localStorage.getItem('d')||'[]')
+function render(x=data){
+products.innerHTML=x.map((p,i)=>`<div class="card">
+<img src="${p.imgs[0]||''}">
 <h4>${p.name}</h4>
-<p class="price">${p.price} جنيه</p>
-<button class="buy" onclick="order('${p.name}')">اطلب الآن</button>
-</div>
-`;
-});
-document.getElementById("products").innerHTML=html;
+<p>${p.price} جنيه</p>
+<button class="buy" onclick="order('${p.name}')">اطلب</button>
+</div>`).join('')
 }
-
-// فلترة
-function filter(cat){
-if(cat==='all'){render(allProducts); return;}
-render(allProducts.filter(p=>p.category===cat));
+function filter(c){if(c==='all')render();else render(data.filter(x=>x.cat==c))}
+function add(){
+let files=imgs.files
+let arr=[]
+for(let f of files){let r=new FileReader();r.onload=e=>{arr.push(e.target.result);if(arr.length==files.length){data.push({name:name.value,price:price.value,cat:cat.value,imgs:arr});localStorage.setItem('d',JSON.stringify(data));render()}};r.readAsDataURL(f)}
 }
-
-// طلب
-function order(name){
-let gov=prompt("اكتب المحافظة");
-let addr=prompt("العنوان");
-
-let msg=`طلب: ${name} - ${gov} - ${addr}`;
-
-window.open(`https://wa.me/201000045821?text=${encodeURIComponent(msg)}`);
-}
-
-load();
-
+function order(n){let gov=prompt('المحافظة');let addr=prompt('العنوان');window.open(`https://wa.me/201000045821?text=${encodeURIComponent(n+' '+gov+' '+addr)}`)}
+let p=prompt('Admin?')
+if(p==='Aq_1sw2de3fr4gt5')admin.style.display='block'
+render()
 </script>
-
 </body>
 </html>
