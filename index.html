@@ -1,78 +1,1631 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClockChic</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ClockChic &#8211; ساعات بستايل</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+
 <style>
-body{margin:0;background:#0f172a;color:#fff;font-family:sans-serif}
-header{display:flex;justify-content:space-between;padding:15px;background:#020617}
-.logo{color:#22d3ee;font-size:22px}
-#clock{font-size:16px}
-nav{display:flex;gap:8px;overflow:auto;padding:10px}
-nav button{background:#1e293b;color:#fff;border:none;padding:8px;border-radius:6px}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;padding:10px}
-.card{background:#1e293b;padding:10px;border-radius:10px}
-img{width:100%;border-radius:8px}
-.buy{background:#22d3ee;border:none;padding:8px;width:100%;border-radius:6px;color:#000}
-.admin{display:none;background:#000;padding:10px}
-input,textarea{width:100%;margin:5px 0;padding:8px}
-.social a{margin:0 5px;color:#22d3ee}
+/* =====================================================
+   ClockChic – Stylesheet
+   Palette: Deep Navy #0B0E1A | Gold #C9A84C | Cream #F8F4EC | Dark #1A1D2E | White #FFFFFF
+   Font: Cairo (Arabic) | Playfair Display (Logo accent)
+===================================================== */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #0B0E1A;
+  --navy2: #1A1D2E;
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --cream: #F8F4EC;
+  --white: #FFFFFF;
+  --gray: #888;
+  --light-gray: #F2F2F2;
+  --text: #1A1D2E;
+  --radius: 14px;
+  --shadow: 0 4px 24px rgba(11,14,26,0.10);
+  --shadow-lg: 0 8px 40px rgba(11,14,26,0.18);
+  --transition: 0.25s ease;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Cairo', Arial, sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+a { text-decoration: none; color: inherit; }
+
+img { max-width: 100%; display: block; }
+
+/* ===== TOPBAR ===== */
+.topbar {
+  background: var(--navy);
+  color: var(--gold);
+  font-size: 0.8rem;
+  padding: 7px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.topbar a { color: var(--gold-light); font-weight: 700; }
+
+/* ===== HEADER ===== */
+.header {
+  background: var(--white);
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  flex-wrap: nowrap;
+}
+
+.logo-clock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.brand-name {
+  font-family: 'Cairo', Arial, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--navy);
+  white-space: nowrap;
+}
+.brand-name span { color: var(--gold); }
+
+.search-bar {
+  flex: 1;
+  display: flex;
+  background: var(--light-gray);
+  border-radius: 30px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border var(--transition);
+  min-width: 0;
+}
+.search-bar:focus-within { border-color: var(--gold); }
+.search-bar input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 16px;
+  font-family: 'Cairo', Arial, sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  direction: rtl;
+  min-width: 0;
+}
+.search-bar button {
+  background: var(--gold);
+  color: white;
+  border: none;
+  padding: 0 18px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background var(--transition);
+  flex-shrink: 0;
+}
+.search-bar button:hover { background: var(--navy); }
+
+.header-icons { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+.icon-btn {
+  position: relative;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: var(--navy);
+  padding: 8px;
+  border-radius: 50%;
+  transition: background var(--transition);
+}
+.icon-btn:hover { background: var(--light-gray); }
+
+.badge {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background: var(--gold);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cairo', Arial, sans-serif;
+}
+
+.mobile-menu-btn { display: none; }
+
+/* ===== NAVBAR ===== */
+.navbar {
+  background: var(--navy);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.navbar::-webkit-scrollbar { display: none; }
+
+.nav-links {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  white-space: nowrap;
+  padding: 0;
+}
+
+.nav-links a {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 12px 18px;
+  transition: color var(--transition), background var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+
+/* ===== HERO ===== */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 60%, #2a2040 100%);
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  padding: 60px 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-eyebrow {
+  color: var(--gold);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.hero h1 {
+  color: var(--white);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+.hero h1 span { color: var(--gold); }
+
+.hero-sub {
+  color: rgba(255,255,255,0.65);
+  font-size: 1rem;
+  max-width: 420px;
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+.hero-cta { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--navy);
+  border: none;
+  padding: 13px 28px;
+  border-radius: 30px;
+  font-family: 'Cairo', Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,168,76,0.4); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 2px solid rgba(255,255,255,0.4);
+  padding: 13px 28px;
+  border-radius: 30px;
+  font-family: 'Cairo', Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+.hero-clock-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ===== DISCOUNT SECTION ===== */
+.discount-section {
+  padding: 40px 16px;
+  background: var(--white);
+}
+.discount-card {
+  background: linear-gradient(135deg, var(--navy) 0%, #2a2040 100%);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  color: white;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.discount-card i { font-size: 2rem; color: var(--gold); margin-bottom: 12px; }
+.discount-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 20px; }
+
+.discount-input-row {
+  display: flex;
+  gap: 10px;
+  max-width: 380px;
+  margin: 0 auto 12px;
+}
+.discount-input-row input {
+  flex: 1;
+  padding: 11px 16px;
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: 30px;
+  background: rgba(255,255,255,0.1);
+  color: white;
+  font-family: 'Cairo', Arial, sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  text-align: center;
+  transition: border var(--transition);
+}
+.discount-input-row input::placeholder { color: rgba(255,255,255,0.4); }
+.discount-input-row input:focus { border-color: var(--gold); }
+.discount-input-row button {
+  background: var(--gold);
+  color: var(--navy);
+  border: none;
+  padding: 11px 22px;
+  border-radius: 30px;
+  font-family: 'Cairo', Arial, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background var(--transition);
+  white-space: nowrap;
+}
+.discount-input-row button:hover { background: var(--gold-light); }
+.discount-msg { font-size: 0.85rem; min-height: 20px; }
+.discount-msg.success { color: #5fff8a; }
+.discount-msg.error { color: #ff7b7b; }
+
+/* ===== PRODUCTS SECTION ===== */
+.products-section { padding: 50px 16px; }
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.section-header h2 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--navy);
+  position: relative;
+}
+.section-header h2::after {
+  content: '';
+  display: block;
+  width: 50px;
+  height: 3px;
+  background: var(--gold);
+  margin-top: 6px;
+  border-radius: 2px;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.chip {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 2px solid var(--navy);
+  background: transparent;
+  color: var(--navy);
+  font-family: 'Cairo', Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.chip:hover, .chip.active {
+  background: var(--navy);
+  color: var(--gold);
+}
+
+/* ===== PRODUCTS GRID ===== */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 22px;
+}
+
+.product-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+  cursor: pointer;
+  position: relative;
+}
+.product-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+
+.product-img-wrap {
+  position: relative;
+  height: 220px;
+  background: var(--light-gray);
+  overflow: hidden;
+}
+.product-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.product-card:hover .product-img-wrap img { transform: scale(1.06); }
+
+.product-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.badge-sale { background: #e74c3c; color: white; }
+.badge-new { background: #27ae60; color: white; }
+
+.img-count {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+
+.product-info { padding: 16px; }
+.product-cat {
+  font-size: 0.7rem;
+  color: var(--gold);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.product-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+.product-desc {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-bottom: 12px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.product-price {
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--navy);
+}
+.product-price .old-price {
+  font-size: 0.8rem;
+  color: var(--gray);
+  text-decoration: line-through;
+  font-weight: 400;
+  display: block;
+}
+.add-to-cart-btn {
+  background: var(--navy);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: 'Cairo', Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.add-to-cart-btn:hover { background: var(--gold); color: var(--navy); }
+
+.no-results { text-align: center; padding: 60px 0; font-size: 1.1rem; color: var(--gray); }
+
+/* ===== WHY US ===== */
+.why-us { padding: 60px 16px; background: var(--white); }
+.why-us h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 36px;
+  color: var(--navy);
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.feature-card {
+  text-align: center;
+  padding: 28px 20px;
+  border-radius: var(--radius);
+  background: var(--cream);
+  transition: transform var(--transition);
+}
+.feature-card:hover { transform: translateY(-4px); }
+.feature-card i { font-size: 2rem; color: var(--gold); margin-bottom: 14px; }
+.feature-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; color: var(--navy); }
+.feature-card p { font-size: 0.85rem; color: var(--gray); line-height: 1.6; }
+
+/* ===== SOCIAL SECTION ===== */
+.social-section { padding: 60px 16px; background: var(--navy); text-align: center; }
+.social-section h2 { color: white; font-size: 1.8rem; font-weight: 900; margin-bottom: 10px; }
+.social-section p { color: rgba(255,255,255,0.6); margin-bottom: 32px; }
+.social-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-family: 'Cairo', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: transform var(--transition), box-shadow var(--transition);
+  color: white;
+}
+.social-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+.facebook { background: #1877F2; }
+.tiktok { background: #010101; border: 1px solid #333; }
+.instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.whatsapp { background: #25D366; }
+
+/* ===== FOOTER ===== */
+.footer {
+  background: var(--navy2);
+  padding: 24px 16px;
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.footer-brand { display: flex; align-items: center; gap: 10px; color: var(--gold); font-weight: 900; font-size: 1.1rem; }
+.footer p { color: rgba(255,255,255,0.4); font-size: 0.8rem; }
+.admin-link { color: rgba(255,255,255,0.2); font-size: 0.75rem; }
+.admin-link:hover { color: var(--gold); }
+
+/* ===== CART DRAWER ===== */
+.cart-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 2000;
+  display: none;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+.cart-overlay.active { display: block; opacity: 1; }
+
+.cart-drawer {
+  position: fixed;
+  top: 0; left: -400px;
+  width: 380px;
+  max-width: 95vw;
+  height: 100dvh;
+  background: white;
+  z-index: 2001;
+  transition: left 0.35s cubic-bezier(.4,0,.2,1);
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+}
+.cart-drawer.open { left: 0; }
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--light-gray);
+}
+.cart-header h3 { font-size: 1.1rem; font-weight: 700; }
+.cart-header button { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--gray); }
+
+.cart-items { flex: 1; overflow-y: auto; padding: 16px; }
+
+.cart-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--light-gray);
+}
+.cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; flex-shrink: 0; }
+.cart-item-info { flex: 1; }
+.cart-item-name { font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; }
+.cart-item-price { font-size: 0.85rem; color: var(--gold); font-weight: 700; }
+.cart-item-qty {
+  display: flex; align-items: center; gap: 8px; margin-top: 6px;
+}
+.qty-btn {
+  width: 26px; height: 26px;
+  border: 1px solid var(--light-gray);
+  background: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background var(--transition);
+}
+.qty-btn:hover { background: var(--light-gray); }
+.cart-item-remove {
+  background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 1rem; padding: 4px;
+}
+
+.cart-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: var(--gray); }
+.cart-empty i { font-size: 3rem; opacity: 0.3; }
+
+.cart-footer { padding: 16px 20px; border-top: 1px solid var(--light-gray); }
+.cart-total { display: flex; justify-content: space-between; font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
+.discount-applied { background: #e8f8ec; color: #27ae60; padding: 8px 12px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; margin-bottom: 12px; text-align: center; }
+.full-width { width: 100%; justify-content: center; }
+
+/* ===== PRODUCT MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 3000;
+  display: none;
+}
+.modal-overlay.active { display: block; }
+
+.product-modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 90vw;
+  max-width: 760px;
+  max-height: 90dvh;
+  background: white;
+  border-radius: 18px;
+  z-index: 3001;
+  overflow-y: auto;
+  opacity: 0;
+  transition: all 0.3s ease;
+  display: none;
+}
+.product-modal.active {
+  display: block;
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.modal-close {
+  position: sticky;
+  top: 12px;
+  float: left;
+  margin: 12px 12px 0 0;
+  background: var(--light-gray);
+  border: none;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  z-index: 10;
+  transition: background var(--transition);
+}
+.modal-close:hover { background: #ddd; }
+
+.modal-content { padding: 20px; }
+.modal-images {
+  display: grid;
+  grid-template-columns: 1fr 80px;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.modal-main-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: zoom-in;
+}
+.modal-thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+  max-height: 300px;
+}
+.modal-thumb {
+  width: 74px; height: 74px;
+  object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border var(--transition);
+  flex-shrink: 0;
+}
+.modal-thumb.active { border-color: var(--gold); }
+
+.modal-title { font-size: 1.3rem; font-weight: 900; margin-bottom: 6px; }
+.modal-cat { color: var(--gold); font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; }
+.modal-price { font-size: 1.4rem; font-weight: 900; color: var(--navy); margin-bottom: 8px; }
+.modal-old-price { font-size: 0.9rem; color: var(--gray); text-decoration: line-through; margin-right: 10px; font-weight: 400; }
+.modal-desc { font-size: 0.9rem; color: var(--gray); line-height: 1.7; margin-bottom: 20px; }
+.modal-actions { display: flex; gap: 12px; }
+.modal-actions .btn-primary { flex: 1; justify-content: center; }
+
+/* ===== ORDER MODAL ===== */
+.order-modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 90vw;
+  max-width: 480px;
+  background: white;
+  border-radius: 18px;
+  z-index: 3001;
+  padding: 28px 24px;
+  opacity: 0;
+  display: none;
+  transition: all 0.3s ease;
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+.order-modal.active { display: block; opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.order-modal h2 { font-size: 1.2rem; font-weight: 900; margin-bottom: 20px; color: var(--navy); display: flex; align-items: center; gap: 10px; }
+.order-modal h2 i { color: var(--gold); }
+
+.order-form { display: flex; flex-direction: column; gap: 12px; }
+.order-form input,
+.order-form select,
+.order-form textarea {
+  padding: 12px 16px;
+  border: 2px solid var(--light-gray);
+  border-radius: 10px;
+  font-family: 'Cairo', Arial, sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border var(--transition);
+  direction: rtl;
+  color: var(--text);
+  background: white;
+  width: 100%;
+}
+.order-form input:focus,
+.order-form select:focus,
+.order-form textarea:focus { border-color: var(--gold); }
+.order-form textarea { resize: vertical; min-height: 80px; }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--navy);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  z-index: 9999;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+  max-width: 90vw;
+  text-align: center;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ===== CANVAS CLOCKS ===== */
+#clockCanvas, #footerClock { display: block; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .mobile-menu-btn { display: flex; }
+
+  .hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 40px 16px;
+    text-align: center;
+  }
+  .hero-sub { margin: 0 auto 24px; }
+  .hero-cta { justify-content: center; }
+  .hero-clock-wrap { order: -1; }
+  #heroClockCanvas { width: 180px; height: 180px; }
+
+  .header-inner { gap: 8px; }
+  .brand-name { font-size: 1.1rem; }
+
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .product-img-wrap { height: 170px; }
+
+  .section-header { flex-direction: column; align-items: flex-start; }
+
+  .modal-images { grid-template-columns: 1fr; }
+  .modal-thumbs { flex-direction: row; max-height: none; overflow-x: auto; overflow-y: visible; }
+  .modal-thumb { width: 60px; height: 60px; }
+  .modal-main-img { height: 250px; }
+
+  .footer-inner { flex-direction: column; text-align: center; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .social-links { gap: 10px; }
+  .social-btn { padding: 10px 18px; font-size: 0.85rem; }
+}
+
+@media (max-width: 480px) {
+  .products-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .product-img-wrap { height: 150px; }
+  .product-info { padding: 10px; }
+  .product-name { font-size: 0.85rem; }
+  .product-price { font-size: 0.9rem; }
+  .add-to-cart-btn { padding: 6px 10px; font-size: 0.75rem; }
+
+  .cart-drawer { width: 100vw; max-width: 100vw; }
+
+  .topbar { font-size: 0.72rem; flex-direction: column; gap: 3px; }
+  .discount-input-row { flex-direction: column; }
+  .discount-input-row input,
+  .discount-input-row button { width: 100%; text-align: center; }
+
+  .features-grid { grid-template-columns: 1fr; }
+}
+
 </style>
 </head>
 <body>
-<header>
-<div class="logo">ClockChic</div>
-<div id="clock"></div>
+
+
+<!-- ===== TOP BAR ===== -->
+<div class="topbar">
+  <span>🚚 شحن سريع لجميع محافظات مصر</span>
+  <span>📞 للتواصل: <a href="https://wa.me/201000045821" target="_blank">واتساب</a></span>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header class="header" id="header">
+  <div class="container header-inner">
+    <!-- Logo as Live Clock -->
+    <div class="logo-clock" id="logoClock">
+      <canvas id="clockCanvas" width="64" height="64"></canvas>
+      <div class="brand-name">Clock<span>Chic</span></div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="ابحث عن ساعتك..." />
+      <button onclick="searchProducts()"><span aria-hidden="true">🔍</span></button>
+    </div>
+
+    <!-- Nav Icons -->
+    <div class="header-icons">
+      <button class="icon-btn" onclick="toggleCart()" title="السلة">
+        <span aria-hidden="true">🛒</span>
+        <span class="badge" id="cartBadge">0</span>
+      </button>
+      <button class="icon-btn mobile-menu-btn" onclick="toggleMobileMenu()">
+        <span aria-hidden="true">☰</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-links">
+      <a href="#" onclick="filterCategory('all')">الكل</a>
+      <a href="#" onclick="filterCategory('smart')"><span aria-hidden="true">⌚</span> ساعات سمارت</a>
+      <a href="#" onclick="filterCategory('men')"><span aria-hidden="true">👨</span> رجالي</a>
+      <a href="#" onclick="filterCategory('women')"><span aria-hidden="true">👩</span> حريمي</a>
+      <a href="#" onclick="filterCategory('sport')"><span aria-hidden="true">🏃</span> سبورت</a>
+      <a href="#" onclick="filterCategory('classic')"><span aria-hidden="true">👑</span> كلاسيك</a>
+      <a href="#" onclick="filterCategory('metal')"><span aria-hidden="true">💍</span> معدن</a>
+      <a href="#" onclick="filterCategory('leather')"><span aria-hidden="true">🟤</span> جلد</a>
+      <a href="#" onclick="filterCategory('casual')"><span aria-hidden="true">⭐</span> كاجوال</a>
+    </div>
+  </nav>
 </header>
 
-<nav>
-<button onclick="filter('all')">الكل</button>
-<button onclick="filter('رجالي')">رجالي</button>
-<button onclick="filter('حريمي')">حريمي</button>
-<button onclick="filter('سمارت')">سمارت</button>
-<button onclick="filter('كاجوال')">كاجوال</button>
-</nav>
+<!-- ===== HERO BANNER ===== -->
+<section class="hero">
+  <div class="hero-content">
+    <p class="hero-eyebrow">أناقة على معصمك</p>
+    <h1>ساعتك.. <br/><span>شخصيتك</span></h1>
+    <p class="hero-sub">اكتشف أحدث كولكشن ساعات بأسعار مميزة وشحن سريع لكل محافظات مصر</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="filterCategory('all'); document.getElementById('products').scrollIntoView({behavior:'smooth'})">تسوق الآن</button>
+      <button class="btn-outline" onclick="document.getElementById('discount-section').scrollIntoView({behavior:'smooth'})">كود خصم؟</button>
+    </div>
+  </div>
+  <div class="hero-clock-wrap">
+    <canvas id="heroClockCanvas" width="280" height="280"></canvas>
+  </div>
+</section>
 
-<div class="products" id="products"></div>
+<!-- ===== DISCOUNT SECTION ===== -->
+<section class="discount-section" id="discount-section">
+  <div class="container">
+    <div class="discount-card">
+      <span aria-hidden="true">🏷️</span>
+      <h3>عندك كود خصم؟</h3>
+      <div class="discount-input-row">
+        <input type="text" id="discountInput" placeholder="أدخل الكود هنا..." />
+        <button onclick="applyDiscount()">تطبيق</button>
+      </div>
+      <p id="discountMsg" class="discount-msg"></p>
+    </div>
+  </div>
+</section>
 
-<div class="admin" id="admin">
-<h3>لوحة التحكم</h3>
-<input id="name" placeholder="اسم المنتج">
-<input id="price" placeholder="السعر">
-<input id="cat" placeholder="القسم">
-<textarea id="desc" placeholder="الوصف"></textarea>
-<input type="file" id="imgs" multiple>
-<button onclick="add()">اضافة</button>
+<!-- ===== FILTER & PRODUCTS ===== -->
+<section class="products-section" id="products">
+  <div class="container">
+    <div class="section-header">
+      <h2>الكولكشن</h2>
+      <div class="filter-chips" id="filterChips">
+        <button class="chip active" onclick="filterCategory('all')">الكل</button>
+        <button class="chip" onclick="filterCategory('smart')">سمارت</button>
+        <button class="chip" onclick="filterCategory('men')">رجالي</button>
+        <button class="chip" onclick="filterCategory('women')">حريمي</button>
+        <button class="chip" onclick="filterCategory('sport')">سبورت</button>
+        <button class="chip" onclick="filterCategory('classic')">كلاسيك</button>
+        <button class="chip" onclick="filterCategory('metal')">معدن</button>
+        <button class="chip" onclick="filterCategory('leather')">جلد</button>
+        <button class="chip" onclick="filterCategory('casual')">كاجوال</button>
+      </div>
+    </div>
+    <div class="products-grid" id="productsGrid"></div>
+    <p id="noResults" class="no-results" style="display:none">😔 مفيش نتائج للبحث ده</p>
+  </div>
+</section>
+
+<!-- ===== WHY US ===== -->
+<section class="why-us">
+  <div class="container">
+    <h2>ليه ClockChic؟</h2>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span aria-hidden="true">🛡️</span>
+        <h4>ضمان الجودة</h4>
+        <p>كل ساعة بتعدي فحص جودة دقيق قبل ما توصلك</p>
+      </div>
+      <div class="feature-card">
+        <span aria-hidden="true">🚚</span>
+        <h4>شحن سريع</h4>
+        <p>توصيل لجميع محافظات مصر خلال 2-5 أيام</p>
+      </div>
+      <div class="feature-card">
+        <span aria-hidden="true">↩️</span>
+        <h4>استرجاع سهل</h4>
+        <p>مش عاجبك؟ ارجعها خلال 14 يوم بدون أسئلة</p>
+      </div>
+      <div class="feature-card">
+        <span aria-hidden="true">🎧</span>
+        <h4>دعم 24/7</h4>
+        <p>فريقنا موجود دايماً عبر الواتساب لمساعدتك</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOCIAL SECTION ===== -->
+<section class="social-section">
+  <div class="container">
+    <h2>تابعنا على السوشيال ميديا</h2>
+    <p>شوف أحدث الكولكشنات والعروض أولاً بأول</p>
+    <div class="social-links">
+      <a href="https://www.facebook.com/share/1A9FYCqeq8/" target="_blank" class="social-btn facebook">
+        <span aria-hidden="true">📘</span> فيسبوك
+      </a>
+      <a href="https://www.tiktok.com/@b5k.a" target="_blank" class="social-btn tiktok">
+        <span aria-hidden="true">🎵</span> تيك توك
+      </a>
+      <a href="https://www.instagram.com/clockchic1?igsh=MTY0bWV4c29mNWNhcw==" target="_blank" class="social-btn instagram">
+        <span aria-hidden="true">📸</span> انستجرام
+      </a>
+      <a href="https://wa.me/201000045821" target="_blank" class="social-btn whatsapp">
+        <span aria-hidden="true">💬</span> واتساب
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <canvas id="footerClock" width="48" height="48"></canvas>
+      <span>ClockChic</span>
+    </div>
+    <p>© 2025 ClockChic – جميع الحقوق محفوظة</p>
+    <a href="admin/login.html" class="admin-link">لوحة التحكم</a>
+  </div>
+</footer>
+
+<!-- ===== CART DRAWER ===== -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <h3>سلة المشتريات</h3>
+    <button onclick="toggleCart()"><span aria-hidden="true">✕</span></button>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total">
+      <span>الإجمالي:</span>
+      <strong id="cartTotal">0 جنيه</strong>
+    </div>
+    <div class="discount-applied" id="discountApplied" style="display:none">
+      <span id="discountAppliedText"></span>
+    </div>
+    <button class="btn-primary full-width" onclick="openOrderModal()">إتمام الطلب</button>
+  </div>
+  <div class="cart-empty" id="cartEmpty">
+    <span aria-hidden="true">🛒</span>
+    <p>السلة فاضية</p>
+  </div>
 </div>
 
-<div class="social">
-<a href="https://www.facebook.com/share/1A9FYCqeq8/">Facebook</a>
-<a href="https://www.instagram.com/clockchic1">Instagram</a>
-<a href="https://www.tiktok.com/@b5k.a">TikTok</a>
+<!-- ===== PRODUCT MODAL ===== -->
+<div class="modal-overlay" id="productModalOverlay" onclick="closeProductModal()"></div>
+<div class="product-modal" id="productModal">
+  <button class="modal-close" onclick="closeProductModal()"><span aria-hidden="true">✕</span></button>
+  <div class="modal-content" id="modalContent"></div>
 </div>
+
+<!-- ===== ORDER MODAL ===== -->
+<div class="modal-overlay" id="orderModalOverlay" onclick="closeOrderModal()"></div>
+<div class="order-modal" id="orderModal">
+  <button class="modal-close" onclick="closeOrderModal()"><span aria-hidden="true">✕</span></button>
+  <h2><span aria-hidden="true">📍</span> بيانات الشحن</h2>
+  <div class="order-form">
+    <input type="text" id="orderName" placeholder="الاسم الكامل *" />
+    <input type="tel" id="orderPhone" placeholder="رقم الموبايل *" />
+    <select id="orderGov">
+      <option value="">اختر المحافظة *</option>
+      <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option>
+      <option>البحيرة</option><option>الغربية</option><option>الدقهلية</option>
+      <option>المنوفية</option><option>القليوبية</option><option>الشرقية</option>
+      <option>الإسماعيلية</option><option>السويس</option><option>بورسعيد</option>
+      <option>كفر الشيخ</option><option>دمياط</option><option>الفيوم</option>
+      <option>بني سويف</option><option>المنيا</option><option>أسيوط</option>
+      <option>سوهاج</option><option>قنا</option><option>الأقصر</option>
+      <option>أسوان</option><option>البحر الأحمر</option><option>مطروح</option>
+      <option>شمال سيناء</option><option>جنوب سيناء</option><option>الوادي الجديد</option>
+    </select>
+    <textarea id="orderAddress" placeholder="العنوان بالتفصيل (الشارع - الحي - رقم المبنى) *" rows="3"></textarea>
+    <button class="btn-primary full-width" onclick="submitOrder()">
+      <span aria-hidden="true">💬</span> تأكيد الطلب عبر واتساب
+    </button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
 
 <script>
-setInterval(()=>clock.innerText=new Date().toLocaleTimeString(),1000)
-let data=JSON.parse(localStorage.getItem('d')||'[]')
-function render(x=data){
-products.innerHTML=x.map((p,i)=>`<div class="card">
-<img src="${p.imgs[0]||''}">
-<h4>${p.name}</h4>
-<p>${p.price} جنيه</p>
-<button class="buy" onclick="order('${p.name}')">اطلب</button>
-</div>`).join('')
+// =====================================================
+// ClockChic – Products Data
+// =====================================================
+// ملاحظة: هذا الملف بيتحكم فيه الأدمن من لوحة التحكم
+// كل المنتجات اتضافت من الداشبورد وبتتحفظ في LocalStorage
+
+const DEFAULT_PRODUCTS = [
+  {
+    id: 1,
+    name: "سمارت ووتش Pro X1",
+    category: "smart",
+    price: 1299,
+    oldPrice: 1800,
+    badge: "خصم",
+    description: "ساعة ذكية متطورة بشاشة AMOLED واضحة، تتبع الصحة والنشاط البدني، بطارية تدوم 7 أيام، مقاومة للماء IP68.",
+    images: [
+      "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/277390/pexels-photo-277390.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/125779/pexels-photo-125779.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 2,
+    name: "رويال مانز كلاسيك",
+    category: "men",
+    price: 899,
+    oldPrice: null,
+    badge: "جديد",
+    description: "ساعة رجالي كلاسيكية بإطار ستانلس ستيل لامع وعقارب ذهبية أنيقة، مينا بيضاء نقية بأرقام رومانية.",
+    images: [
+      "https://images.pexels.com/photos/2783873/pexels-photo-2783873.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 3,
+    name: "روز جولد ليدي",
+    category: "women",
+    price: 750,
+    oldPrice: 950,
+    badge: "خصم",
+    description: "ساعة حريمي راقية بلون الذهب الوردي الفاخر، سوار مريح قابل للتعديل، مناسبة لكل المناسبات.",
+    images: [
+      "https://images.pexels.com/photos/236915/pexels-photo-236915.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/1460838/pexels-photo-1460838.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 4,
+    name: "سبورت تراكر X",
+    category: "sport",
+    price: 599,
+    oldPrice: null,
+    badge: null,
+    description: "ساعة سبورت خفيفة الوزن مع GPS مدمج وقياس نبضات القلب، مثالية للرياضة والتمارين الشاقة.",
+    images: [
+      "https://images.pexels.com/photos/2113994/pexels-photo-2113994.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/3373736/pexels-photo-3373736.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 5,
+    name: "هيريتاج كلاسيك",
+    category: "classic",
+    price: 1100,
+    oldPrice: 1400,
+    badge: "خصم",
+    description: "ساعة كلاسيكية مستوحاة من حقبة الثلاثينيات، حركة ميكانيكية أوتوماتيكية، زجاج كريستال سافير مقاوم للخدش.",
+    images: [
+      "https://images.pexels.com/photos/1619317/pexels-photo-1619317.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/9978722/pexels-photo-9978722.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 6,
+    name: "ميلانيز ستيل",
+    category: "metal",
+    price: 680,
+    oldPrice: null,
+    badge: "جديد",
+    description: "ساعة بسوار معدني ميلانيز شبكي ناعم ومريح للبشرة، إطار ستانلس ستيل 316L لا يصدأ.",
+    images: [
+      "https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/2424173/pexels-photo-2424173.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 7,
+    name: "براون ليذر إيليت",
+    category: "leather",
+    price: 820,
+    oldPrice: 1050,
+    badge: "خصم",
+    description: "ساعة بسوار جلد طبيعي بني داكن مصنوع يدوياً، لمسة فاخرة تناسب الإطلالة الرسمية والكاجوال.",
+    images: [
+      "https://images.pexels.com/photos/844923/pexels-photo-844923.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/1697566/pexels-photo-1697566.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 8,
+    name: "كاجوال فيب",
+    category: "casual",
+    price: 420,
+    oldPrice: null,
+    badge: null,
+    description: "ساعة كاجوال عصرية بألوان متنوعة، خفيفة ومريحة لليومي، مقاومة للرطوبة.",
+    images: [
+      "https://images.pexels.com/photos/2783873/pexels-photo-2783873.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/5710080/pexels-photo-5710080.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 9,
+    name: "سمارت فيت 2",
+    category: "smart",
+    price: 980,
+    oldPrice: 1200,
+    badge: "خصم",
+    description: "ساعة ذكية مع شاشة لمس واضحة، إشعارات الهاتف، قياس الأكسجين في الدم ومراقبة النوم.",
+    images: [
+      "https://images.pexels.com/photos/2113854/pexels-photo-2113854.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 10,
+    name: "سيلفر موون",
+    category: "women",
+    price: 650,
+    oldPrice: null,
+    badge: "جديد",
+    description: "ساعة حريمي أنيقة بإطار فضي براق وسوار سيليكون ناعم، مينا مرصعة بأحجار كريستال.",
+    images: [
+      "https://images.pexels.com/photos/277390/pexels-photo-277390.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/125779/pexels-photo-125779.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 11,
+    name: "مانز سبورت برو",
+    category: "sport",
+    price: 750,
+    oldPrice: 900,
+    badge: "خصم",
+    description: "ساعة رياضية للرجال مع عداد الخطوات وقياس السعرات الحرارية، مقاومة للصدمات.",
+    images: [
+      "https://images.pexels.com/photos/1460838/pexels-photo-1460838.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/236915/pexels-photo-236915.jpeg?auto=compress&w=500"
+    ]
+  },
+  {
+    id: 12,
+    name: "كلاسيك بلاك إيليت",
+    category: "classic",
+    price: 1350,
+    oldPrice: null,
+    badge: null,
+    description: "ساعة كلاسيكية بمينا سوداء فاخرة وإطار ذهبي لامع، رمز التميز والأناقة.",
+    images: [
+      "https://images.pexels.com/photos/844923/pexels-photo-844923.jpeg?auto=compress&w=500",
+      "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&w=500"
+    ]
+  }
+];
+
+// Load products from localStorage or use defaults
+function getProducts() {
+  const stored = localStorage.getItem('cc_products');
+  if (stored) {
+    try { return JSON.parse(stored); } catch(e) { return DEFAULT_PRODUCTS; }
+  }
+  return DEFAULT_PRODUCTS;
 }
-function filter(c){if(c==='all')render();else render(data.filter(x=>x.cat==c))}
-function add(){
-let files=imgs.files
-let arr=[]
-for(let f of files){let r=new FileReader();r.onload=e=>{arr.push(e.target.result);if(arr.length==files.length){data.push({name:name.value,price:price.value,cat:cat.value,imgs:arr});localStorage.setItem('d',JSON.stringify(data));render()}};r.readAsDataURL(f)}
+
+function saveProducts(products) {
+  localStorage.setItem('cc_products', JSON.stringify(products));
 }
-function order(n){let gov=prompt('المحافظة');let addr=prompt('العنوان');window.open(`https://wa.me/201000045821?text=${encodeURIComponent(n+' '+gov+' '+addr)}`)}
-let p=prompt('Admin?')
-if(p==='Aq_1sw2de3fr4gt5')admin.style.display='block'
-render()
+
+// Init with defaults if empty
+if (!localStorage.getItem('cc_products')) {
+  saveProducts(DEFAULT_PRODUCTS);
+}
+
 </script>
-</body>
-</html>
+<script>
+// =====================================================
+// ClockChic – Main App JS
+// =====================================================
+
+let cart = JSON.parse(localStorage.getItem('cc_cart') || '[]');
+let products = getProducts();
+let currentCategory = 'all';
+let activeDiscount = null;
+let currentModalProduct = null;
+let currentModalImageIndex = 0;
+
+// ===== LIVE CLOCKS =====
+function drawClock(canvasId, size) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = size / 2, cy = size / 2, r = size / 2 - 2;
+  const now = new Date();
+  const h = now.getHours() % 12;
+  const m = now.getMinutes();
+  const s = now.getSeconds();
+
+  ctx.clearRect(0, 0, size, size);
+
+  // Face
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fillStyle = '#0B0E1A';
+  ctx.fill();
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = size === 64 ? 2.5 : 3;
+  ctx.stroke();
+
+  // Markers
+  for (let i = 0; i < 12; i++) {
+    const angle = (i * Math.PI * 2) / 12 - Math.PI / 2;
+    const len = i % 3 === 0 ? 0.14 : 0.09;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(angle) * r * (1 - len), cy + Math.sin(angle) * r * (1 - len));
+    ctx.lineTo(cx + Math.cos(angle) * r * 0.88, cy + Math.sin(angle) * r * 0.88);
+    ctx.strokeStyle = i % 3 === 0 ? '#C9A84C' : 'rgba(255,255,255,0.4)';
+    ctx.lineWidth = i % 3 === 0 ? 2 : 1;
+    ctx.stroke();
+  }
+
+  // Hour hand
+  const hAngle = ((h + m / 60) * Math.PI * 2) / 12 - Math.PI / 2;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx + Math.cos(hAngle) * r * 0.5, cy + Math.sin(hAngle) * r * 0.5);
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = size === 64 ? 2.5 : 3.5;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+
+  // Minute hand
+  const mAngle = ((m + s / 60) * Math.PI * 2) / 60 - Math.PI / 2;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx + Math.cos(mAngle) * r * 0.7, cy + Math.sin(mAngle) * r * 0.7);
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = size === 64 ? 1.8 : 2.5;
+  ctx.stroke();
+
+  // Second hand
+  const sAngle = (s * Math.PI * 2) / 60 - Math.PI / 2;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx + Math.cos(sAngle) * r * 0.78, cy + Math.sin(sAngle) * r * 0.78);
+  ctx.strokeStyle = '#C9A84C';
+  ctx.lineWidth = 1.2;
+  ctx.stroke();
+
+  // Center dot
+  ctx.beginPath();
+  ctx.arc(cx, cy, size === 64 ? 2.5 : 4, 0, Math.PI * 2);
+  ctx.fillStyle = '#C9A84C';
+  ctx.fill();
+}
+
+function tickClocks() {
+  drawClock('clockCanvas', 64);
+  drawClock('heroClockCanvas', 280);
+  drawClock('footerClock', 48);
+}
+setInterval(tickClocks, 1000);
+tickClocks();
+
+// ===== RENDER PRODUCTS =====
+function renderProducts(list) {
+  const grid = document.getElementById('productsGrid');
+  const noResults = document.getElementById('noResults');
+  grid.innerHTML = '';
+
+  if (!list || list.length === 0) {
+    noResults.style.display = 'block';
+    return;
+  }
+  noResults.style.display = 'none';
+
+  list.forEach(p => {
+    const img = p.images && p.images.length > 0 ? p.images[0] : 'https://via.placeholder.com/400x300?text=صورة+قريباً';
+    const badgeClass = p.badge === 'خصم' ? 'badge-sale' : p.badge === 'جديد' ? 'badge-new' : '';
+    const imgCountHTML = p.images && p.images.length > 1 ? `<span class="img-count">📷 ${p.images.length}</span>` : '';
+    const oldPriceHTML = p.oldPrice ? `<span class="old-price">${p.oldPrice} جنيه</span>` : '';
+    const badgeHTML = p.badge ? `<span class="product-badge ${badgeClass}">${p.badge}</span>` : '';
+    const catLabels = { smart:'سمارت', men:'رجالي', women:'حريمي', sport:'سبورت', classic:'كلاسيك', metal:'معدن', leather:'جلد', casual:'كاجوال' };
+
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="product-img-wrap" onclick="openProductModal(${p.id})">
+        <img src="${img}" alt="${p.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300?text=صورة+قريباً'" />
+        ${badgeHTML}
+        ${imgCountHTML}
+      </div>
+      <div class="product-info">
+        <p class="product-cat">${catLabels[p.category] || p.category}</p>
+        <h3 class="product-name" onclick="openProductModal(${p.id})">${p.name}</h3>
+        <p class="product-desc">${p.description || ''}</p>
+        <div class="product-footer">
+          <div class="product-price">
+            ${oldPriceHTML}
+            ${p.price} جنيه
+          </div>
+          <button class="add-to-cart-btn" onclick="addToCart(${p.id}, event)">
+            + السلة
+          </button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ===== FILTER =====
+function filterCategory(cat) {
+  currentCategory = cat;
+  products = getProducts();
+
+  // Update nav links
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+
+  // Mark active chip
+  document.querySelectorAll('.chip').forEach(c => {
+    const catMap = { 'الكل':'all','سمارت':'smart','رجالي':'men','حريمي':'women','سبورت':'sport','كلاسيك':'classic','معدن':'metal','جلد':'leather','كاجوال':'casual' };
+    if (catMap[c.textContent] === cat || (cat === 'all' && c.textContent === 'الكل')) c.classList.add('active');
+  });
+
+  const filtered = cat === 'all' ? products : products.filter(p => p.category === cat);
+  renderProducts(filtered);
+}
+
+// ===== SEARCH =====
+function searchProducts() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  products = getProducts();
+  if (!q) { filterCategory(currentCategory); return; }
+  const results = products.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    (p.description && p.description.toLowerCase().includes(q))
+  );
+  renderProducts(results);
+}
+
+document.getElementById('searchInput').addEventListener('keyup', e => {
+  if (e.key === 'Enter') searchProducts();
+});
+
+// ===== PRODUCT MODAL =====
+function openProductModal(id) {
+  products = getProducts();
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  currentModalProduct = p;
+  currentModalImageIndex = 0;
+  const catLabels = { smart:'سمارت', men:'رجالي', women:'حريمي', sport:'سبورت', classic:'كلاسيك', metal:'معدن', leather:'جلد', casual:'كاجوال' };
+  const imgs = p.images && p.images.length > 0 ? p.images : ['https://via.placeholder.com/600x400?text=صورة+قريباً'];
+  const oldPriceHTML = p.oldPrice ? `<span class="modal-old-price">${p.oldPrice} جنيه</span>` : '';
+
+  const thumbsHTML = imgs.map((img, i) =>
+    `<img class="modal-thumb ${i===0?'active':''}" src="${img}" alt="" onclick="switchModalImage(${i})" onerror="this.src='https://via.placeholder.com/80x80?text=صورة'" />`
+  ).join('');
+
+  document.getElementById('modalContent').innerHTML = `
+    <div class="modal-images">
+      <img class="modal-main-img" id="modalMainImg" src="${imgs[0]}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/600x400?text=صورة+قريباً'" />
+      <div class="modal-thumbs" id="modalThumbs">${thumbsHTML}</div>
+    </div>
+    <p class="modal-cat">${catLabels[p.category] || ''}</p>
+    <h2 class="modal-title">${p.name}</h2>
+    <p class="modal-price">${oldPriceHTML}${p.price} جنيه</p>
+    <p class="modal-desc">${p.description || ''}</p>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="addToCart(${p.id}); closeProductModal();">
+        <span aria-hidden="true">🛒</span> أضف للسلة
+      </button>
+      <a href="https://wa.me/201000045821?text=مرحباً، أريد الاستفسار عن ساعة: ${encodeURIComponent(p.name)}" target="_blank" class="btn-outline" style="padding:13px 20px;border-color:var(--gold);color:var(--gold);display:inline-flex;align-items:center;gap:8px;border-radius:30px;font-family:Cairo,sans-serif;font-weight:700;font-size:0.9rem;cursor:pointer;">
+        <span aria-hidden="true">💬</span> اسأل عنها
+      </a>
+    </div>
+  `;
+
+  document.getElementById('productModalOverlay').classList.add('active');
+  document.getElementById('productModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function switchModalImage(index) {
+  if (!currentModalProduct) return;
+  const imgs = currentModalProduct.images || [];
+  if (!imgs[index]) return;
+  currentModalImageIndex = index;
+  document.getElementById('modalMainImg').src = imgs[index];
+  document.querySelectorAll('.modal-thumb').forEach((t, i) => {
+    t.classList.toggle('active', i === index);
+  });
+}
+
+function closeProductModal() {
+  document.getElementById('productModalOverlay').classList.remove('active');
+  document.getElementById('productModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// ===== CART =====
+function saveCart() {
+  localStorage.setItem('cc_cart', JSON.stringify(cart));
+  updateCartBadge();
+  renderCart();
+}
+
+function updateCartBadge() {
+  const total = cart.reduce((sum, i) => sum + i.qty, 0);
+  document.getElementById('cartBadge').textContent = total;
+}
+
+function addToCart(id, e) {
+  if (e) e.stopPropagation();
+  products = getProducts();
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  const existing = cart.find(i => i.id === id);
+  if (existing) { existing.qty++; }
+  else {
+    cart.push({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: (p.images && p.images[0]) || '',
+      qty: 1
+    });
+  }
+  saveCart();
+  showToast(`✅ ${p.name} اتضاف للسلة`);
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(i => i.id !== id);
+  saveCart();
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
+  saveCart();
+}
+
+function renderCart() {
+  const itemsEl = document.getElementById('cartItems');
+  const emptyEl = document.getElementById('cartEmpty');
+  const footerEl = document.getElementById('cartFooter');
+
+  if (cart.length === 0) {
+    itemsEl.innerHTML = '';
+    emptyEl.style.display = 'flex';
+    footerEl.style.display = 'none';
+    return;
+  }
+  emptyEl.style.display = 'none';
+  footerEl.style.display = 'block';
+
+  itemsEl.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <img src="${item.image}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/60x60?text=صورة'" />
+      <div class="cart-item-info">
+        <p class="cart-item-name">${item.name}</p>
+        <p class="cart-item-price">${item.price} جنيه</p>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+          <span>${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id}, +1)">+</button>
+        </div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${item.id})"><span aria-hidden="true">🗑️</span></button>
+    </div>
+  `).join('');
+
+  updateTotal();
+}
+
+function updateTotal() {
+  const subtotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+  let final = subtotal;
+  const discountApplied = document.getElementById('discountApplied');
+  if (activeDiscount) {
+    if (activeDiscount.type === 'percent') final = subtotal * (1 - activeDiscount.value / 100);
+    else final = subtotal - activeDiscount.value;
+    if (final < 0) final = 0;
+    discountApplied.style.display = 'block';
+    document.getElementById('discountAppliedText').textContent = `🎉 خصم مطبق: ${activeDiscount.code} (وفرت ${subtotal - final} جنيه)`;
+  } else {
+    discountApplied.style.display = 'none';
+  }
+  document.getElementById('cartTotal').textContent = `${Math.round(final)} جنيه`;
+}
+
+function toggleCart() {
+  const drawer = document.getElementById('cartDrawer');
+  const overlay = document.getElementById('cartOverlay');
+  const isOpen = drawer.classList.contains('open');
+  drawer.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('active', !isOpen);
+  document.body.style.overflow = isOpen ? '' : 'hidden';
+  if (!isOpen) renderCart();
+}
+
+// ===== DISCOUNT CODES =====
+function getDiscountCodes() {
+  const stored = localStorage.getItem('cc_discounts');
+  if (stored) { try { return JSON.parse(stored); } catch(e) {} }
+  return [
+    { code: 'CHIC10', type: 'percent', value: 10 },
+    { code: 'CHIC20', type: 'percent', value: 20 },
+    { code: 'SAVE50', type: 'fixed', value: 50 }
+  ];
+}
+
+function applyDiscount() {
+  const code = document.getElementById('discountInput').value.trim().toUpperCase();
+  const msgEl = document.getElementById('discountMsg');
+  const codes = getDiscountCodes();
+  const found = codes.find(c => c.code === code);
+  if (found) {
+    activeDiscount = found;
+    const label = found.type === 'percent' ? `${foun
