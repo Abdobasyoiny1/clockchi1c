@@ -1,24 +1,192 @@
 <!DOCTYPE html>
-<html dir="rtl">
+<html lang="ar" dir="rtl">
 <head>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClockChic</title>
+
 <style>
-body{background:#111;color:#fff;font-family:sans-serif}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.card{background:#222;padding:10px;border-radius:10px}
+
+body{
+margin:0;
+font-family:sans-serif;
+background:#0f172a;
+color:#fff;
+}
+
+/* Header */
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px;
+background:#020617;
+}
+
+.logo{
+color:#22d3ee;
+font-size:22px;
+font-weight:bold;
+}
+
+#clock{
+font-size:16px;
+}
+
+/* Categories */
+nav{
+display:flex;
+overflow:auto;
+gap:10px;
+padding:10px;
+background:#020617;
+}
+
+nav button{
+background:#1e293b;
+border:none;
+color:#fff;
+padding:8px 12px;
+border-radius:8px;
+}
+
+/* Products */
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:10px;
+padding:10px;
+}
+
+.card{
+background:#1e293b;
+border-radius:10px;
+padding:10px;
+}
+
+.card img{
+width:100%;
+border-radius:8px;
+}
+
+.card h4{
+margin:5px 0;
+}
+
+.price{
+color:#22d3ee;
+}
+
+/* Button */
+button.buy{
+background:#22d3ee;
+border:none;
+padding:10px;
+width:100%;
+border-radius:8px;
+color:#000;
+margin-top:5px;
+}
+
+/* Floating WhatsApp */
+.whatsapp{
+position:fixed;
+bottom:15px;
+left:15px;
+background:#25d366;
+color:#fff;
+padding:12px;
+border-radius:50%;
+font-size:20px;
+}
+
+/* Post banner */
+.banner{
+background:#22d3ee;
+color:#000;
+text-align:center;
+padding:8px;
+font-weight:bold;
+}
+
 </style>
 </head>
+
 <body>
-<h2>ClockChic</h2>
+
+<div class="banner">🔥 عروض جديدة كل يوم 🔥</div>
+
+<header>
+<div class="logo">ClockChic</div>
+<div id="clock"></div>
+</header>
+
+<nav>
+<button onclick="filter('all')">الكل</button>
+<button onclick="filter('رجالي')">رجالي</button>
+<button onclick="filter('حريمي')">حريمي</button>
+<button onclick="filter('سمارت')">سمارت</button>
+<button onclick="filter('كلاسيك')">كلاسيك</button>
+</nav>
+
 <div class="products" id="products"></div>
+
+https://wa.me/201000045821💬</a>
+
 <script>
-fetch('/api/products').then(r=>r.json()).then(d=>{
- let html='';
- d.forEach(p=>{
- html+=`<div class="card"><img src="${p.images[0]||''}" width="100%"><h3>${p.name}</h3><p>${p.price}</p></div>`
- });
- document.getElementById('products').innerHTML=html;
+
+// الساعة اللايف
+setInterval(()=>{
+document.getElementById("clock").innerText=
+new Date().toLocaleTimeString();
+},1000);
+
+// عرض المنتجات
+let allProducts=[];
+
+function load(){
+fetch('/api/products')
+.then(r=>r.json())
+.then(data=>{
+allProducts=data;
+render(data);
 });
+}
+
+function render(data){
+let html='';
+data.forEach(p=>{
+html+=`
+<div class="card">
+${p.images[0] || 
+<h4>${p.name}</h4>
+<p class="price">${p.price} جنيه</p>
+<button class="buy" onclick="order('${p.name}')">اطلب الآن</button>
+</div>
+`;
+});
+document.getElementById("products").innerHTML=html;
+}
+
+// فلترة
+function filter(cat){
+if(cat==='all'){render(allProducts); return;}
+render(allProducts.filter(p=>p.category===cat));
+}
+
+// طلب
+function order(name){
+let gov=prompt("اكتب المحافظة");
+let addr=prompt("العنوان");
+
+let msg=`طلب: ${name} - ${gov} - ${addr}`;
+
+window.open(`https://wa.me/201000045821?text=${encodeURIComponent(msg)}`);
+}
+
+load();
+
 </script>
+
 </body>
 </html>
