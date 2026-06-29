@@ -1,47 +1,202 @@
-<!-- ADMIN FILE -->
 <!DOCTYPE html>
-<html lang='ar' dir='rtl'>
+<html lang="ar" dir="rtl">
 <head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<title>Admin</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لوحة التحكم - ClockChic</title>
+
+<style>
+body{
+background:#0f172a;
+color:#fff;
+font-family:cairo;
+padding:15px
+}
+
+h2{color:#22d3ee}
+
+input, textarea, select{
+width:100%;
+padding:10px;
+margin:5px 0;
+border:none;
+border-radius:8px;
+}
+
+button{
+background:#22d3ee;
+color:#000;
+border:none;
+padding:10px;
+margin:5px 0;
+width:100%;
+border-radius:8px;
+font-weight:bold;
+}
+
+.card{
+background:#1e293b;
+padding:10px;
+margin:10px 0;
+border-radius:10px
+}
+
+img{
+width:80px;
+border-radius:8px
+}
+
+</style>
 </head>
-<body style='background:#111;color:#fff;font-family:sans-serif;padding:20px'>
 
-<h2>لوحة التحكم</h2>
-<input id='pass' placeholder='الباسورد'>
-<button onclick='login()'>دخول</button>
+<body>
 
-<div id='panel' style='display:none'>
-<input id='name' placeholder='اسم المنتج'>
-<input id='price' placeholder='السعر'>
-<input type='file' id='imgs' multiple>
-<button onclick='add()'>اضافة</button>
-<div id='list'></div>
+<h2>🔐 لوحة التحكم</h2>
+
+<!-- LOGIN -->
+<div id="loginBox">
+<input id="password" placeholder="ادخل الباسورد">
+<button onclick="login()">دخول</button>
+</div>
+
+<!-- DASHBOARD -->
+<div id="panel" style="display:none">
+
+<h3>➕ إضافة منتج</h3>
+
+<input id="name" placeholder="اسم المنتج">
+<input id="price" placeholder="السعر">
+<textarea id="desc" placeholder="الوصف"></textarea>
+<select id="category">
+<option value="">اختار القسم</option>
+<option>smart</option>
+<option>men</option>
+<option>women</option>
+<option>sport</option>
+<option>classic</option>
+</select>
+
+<input type="file" id="images" multiple>
+
+<button onclick="addProduct()">إضافة</button>
+
+<hr>
+
+<h3>📦 المنتجات</h3>
+<div id="productsList"></div>
+
 </div>
 
 <script>
-const PASSWORD='Aq_1sw2de3fr4gt5';
 
+const PASSWORD = "Aq_1sw2de3fr4gt5";
+
+// ✅ تسجيل دخول
 function login(){
- if(pass.value===PASSWORD){panel.style.display='block'}
+if(password.value === PASSWORD){
+loginBox.style.display = "none";
+panel.style.display = "block";
+loadProducts();
+}else{
+alert("❌ الباسورد غلط");
+}
 }
 
-function add(){
- let files=imgs.files
- let arr=[]
- for(let f of files){
- let r=new FileReader()
- r.onload=e=>{
- arr.push(e.target.result)
- if(arr.length===files.length){
- fetch('/api/products',{method:'POST',headers:{'Content-Type':'application/json'},
- body:JSON.stringify({name:name.value,price:price.value,images:arr})})
- }
- }
- r.readAsDataURL(f)
- }
+// ✅ إضافة منتج
+function addProduct(){
+
+let files = images.files;
+let imgs = [];
+
+for(let f of files){
+
+let reader = new FileReader();
+
+reader.onload = (e)=>{
+imgs.push(e.target.result);
+
+if(imgs.length === files.length){
+
+fetch('/api/products',{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+name:name.value,
+price:price.value,
+desc:desc.value,
+category:category.value,
+images:imgs
+})
+})
+.then(()=>{
+alert("✅ تم الإضافة");
+clearInputs();
+loadProducts();
+});
+
 }
+
+};
+
+reader.readAsDataURL(f);
+
+}
+
+}
+
+// ✅ تحميل المنتجات
+function loadProducts(){
+
+fetch('/api/products')
+.then(res=>res.json())
+.then(data=>{
+
+productsList.innerHTML = '';
+
+data.forEach(p=>{
+
+productsList.innerHTML += `
+<div class="card">
+${p.images[0]}
+
+<h4>${p.name}</h4>
+<p>${p.price} جنيه</p>
+
+<button onclick="deleteProduct('${p._id}')">
+🗑️ حذف
+</button>
+
+</div>
+`;
+
+});
+
+});
+
+}
+
+// ✅ حذف منتج
+function deleteProduct(id){
+
+fetch('/api/products/' + id,{
+method:'DELETE'
+})
+.then(()=>{
+alert("❌ تم الحذف");
+loadProducts();
+});
+
+}
+
+// ✅ تنظيف المدخلات
+function clearInputs(){
+name.value='';
+price.value='';
+desc.value='';
+category.value='';
+images.value='';
+}
+
 </script>
 
 </body>
