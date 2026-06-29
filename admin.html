@@ -1,0 +1,48 @@
+<!-- ADMIN FILE -->
+<!DOCTYPE html>
+<html lang='ar' dir='rtl'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Admin</title>
+</head>
+<body style='background:#111;color:#fff;font-family:sans-serif;padding:20px'>
+
+<h2>لوحة التحكم</h2>
+<input id='pass' placeholder='الباسورد'>
+<button onclick='login()'>دخول</button>
+
+<div id='panel' style='display:none'>
+<input id='name' placeholder='اسم المنتج'>
+<input id='price' placeholder='السعر'>
+<input type='file' id='imgs' multiple>
+<button onclick='add()'>اضافة</button>
+<div id='list'></div>
+</div>
+
+<script>
+const PASSWORD='Aq_1sw2de3fr4gt5';
+
+function login(){
+ if(pass.value===PASSWORD){panel.style.display='block'}
+}
+
+function add(){
+ let files=imgs.files
+ let arr=[]
+ for(let f of files){
+ let r=new FileReader()
+ r.onload=e=>{
+ arr.push(e.target.result)
+ if(arr.length===files.length){
+ fetch('/api/products',{method:'POST',headers:{'Content-Type':'application/json'},
+ body:JSON.stringify({name:name.value,price:price.value,images:arr})})
+ }
+ }
+ r.readAsDataURL(f)
+ }
+}
+</script>
+
+</body>
+</html>
